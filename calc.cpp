@@ -1,7 +1,7 @@
 #include "calc.h"
 
 /*
- * Copyright (c) Miles R. Chang 2024
+ * Copyright (c) Mileter 2024
  * TODO Add custom function support (e.g. f(x) = x + 1) @ applyOperation()
  * TODO Add multivarible function support (e.g. log(b, x) ) @ computeExpression()
  * TODO Add prefix and postfix @ computeExpression() & main() 
