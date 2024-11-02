@@ -40,13 +40,26 @@
 #define copyright "Copyright (c) 2024 Mileter"
 #define product_name "CalCMD Shell"
 
+// error codes
+#define ERR_NESTED_ERROR 2
+
+#define ERR_ALREADY_EXIST 3
+#define ERR_ALREADY_RESERVED 4
+#define ERR_ILLEGAL_CHAR 5
+
+#define ERR_DIV_BY_ZERO 6
+#define ERR_ARGC_LESS_THAN_OP 7
+#define ERR_ARGC_MORE_THAN_OP 8
+
+#define ERR_CANNOT_RESOLVE 10
+
 // global definations
 
 // shell
 extern bool isRedirected; // has CIN/I/SCANF been redirected from a file/program?
 extern bool stopReading;  // has the program reached end of input?
 // calculation
-extern std::map<pair<int, std::string>, pair<std::vector<std::string>, std::string>> func; // ((argc, name), evaluation string)
+extern std::map<std::string, std::tuple<int, std::vector<std::string>, std::string>> func; // ((argc, name), evaluation string)
 extern std::map<pair<int, std::string>, std::string> funcComments; // ((argc, name), comments)
 // trig
 extern bool usingRadians;
@@ -82,16 +95,16 @@ int main(
 
 // parse.cpp
 // Calculation parsers
-double evalulatePostfix(
+long double evalulatePostfix(
 	std::string expr
 );
-double infixToPostfix(
+long double infixToPostfix(
 	std::string expr
 );
-double prefixToPostfix(
+long double prefixToPostfix(
 	std::string expr
 );
-double computeExpression(
+long double computeExpression(
 	std::string expression, 
 	int inputFormat = 1
 );
@@ -107,7 +120,7 @@ void validityParse(
 int precedence(
 	string op
 );
-double applyOperation(
+long double applyOperation(
 	string op,
 	int argc,
 	std::string argv[]
@@ -125,11 +138,6 @@ void removeFunction(
 );
 bool resolveFunction(
 	std::string name
-);
-double computeFunction(
-	std::string name,
-	int argc,
-	double ** argv
 );
 std::string getEvaluationExpr(
 	std::string name
