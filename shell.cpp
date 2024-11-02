@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 	
 	while(!stopReading)
 	{
-		cout << "Not implemented\n";
+		cout << "Not implemented\n"; // implement more when all the helper functions are done.
 		stopReading = true;
 	}
     return 0;
