@@ -46,8 +46,8 @@
 extern bool isRedirected; // has CIN/I/SCANF been redirected from a file/program?
 extern bool stopReading;  // has the program reached end of input?
 // calculation
-extern std::map<std::string, std::string> func; // (name, evaluation string)
-extern std::map<std::string, std::string> funcComments; // (name, comments)
+extern std::map<pair<int, string>, pair<vector<string>, string>> func; // ((argc, name), evaluation string)
+extern std::map<pair<int, string>, std::string> funcComments; // ((argc, name), comments)
 // trig
 extern bool usingRadians;
 
