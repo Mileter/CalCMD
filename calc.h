@@ -3,91 +3,134 @@
 
 #pragma once
 
-#include <iostream> // for I/O into CIN/COUT
-#include <vector>   // for parsing purposes
-#include <regex>    // for splitString()
-#include <string>   // for parsing purposes
-#include <cmath>    // mathematical functions
-#include <stack>    // for parsing purposes
+/*
+ * calc.h
+ *
+ * Copyright (c) 2024 Mileter
+ *
+ * Distributed under MIT License.
+ * You should have recieved a license with this file.
+ * If not, check the origin git page.
+ *
+ * calc.h defines all functions that should be implemented.
+ */
 
-#ifdef HAS_GRAPH_LIBS
-// sdl
-#elif defined(HAS_CURSES)
-// curses
+#include <iostream>  // for I/O into CIN/COUT
+#include <cstdio>    // (more I/O)
+#include <vector>    // for parsing purposes
+#include <regex>     // for splitString()
+#include <string>    // for parsing purposes
+#include <cmath>     // mathematical functions
+#include <stack>     // for parsing purposes
+#include <stdexcept> // handle bad arguments
+
+#ifdef _WIN32       // get access to isatty()
+	#include <io.h>
+#else
+	#include <unistd.h>
 #endif
 
-#define version   0.9
-#define copyright 2024
+#if defined(HAS_CURSES) // stay in console if possible
+// curses
+#elif defined(HAS_SDL2)
+// sdl
+#endif
 
-using namespace std;
+#define version   1.0
+#define copyright "Copyright (c) 2024 Mileter"
+#define product_name "CalCMD Shell"
+
+// global definations
+
+// shell
+extern bool isRedirected; // has CIN/I/SCANF been redirected from a file/program?
+extern bool stopReading;  // has the program reached end of input?
+// calculation
+extern std::map<std::string, std::string> func; // (name, evaluation string)
+extern std::map<std::string, std::string> funcComments; // (name, comments)
+// trig
+extern bool usingRadians;
 
 // String operations
-vector<string> splitString(
-	const string str,
-    const string delimiter
+std::vector<std::string> splitString(
+	const std::string str,
+    const std::string delimiter
 );
-vector<string> sliceString(
-	const vector<string>& v, 
+std::vector<std::string> sliceString(
+	const std::vector<std::string>& v, 
     int x,
     int legnth
 );
 
+// shell.cpp
 // Shell
+#ifndef BUILD_LIBRARY
 string getCommand();
 void printAbout();
-void printFunctions(
-	vector<string> func = {"No functions have been defined."}
+void printFunctions();
+void printHelp();
+void recordError(
+	std::string sender,
+	std::string message
 );
-void printHelp(
-	vector<string> func
-);
-int formattingError(
-	string sender
-);
-/* 
-int main();
-*/
 
-// Calculation
+int main(
+	int argc, 
+	char **argv
+);
+#endif
+
+// parse.cpp
+// Calculation parsers
+double evalulatePostfix(
+	std::string expr
+);
+double infixToPostfix(
+	std::string expr
+);
+double prefixToPostfix(
+	std::string expr
+);
 double computeExpression(
-	string expression, 
+	std::string expression, 
 	int inputFormat = 1
 );
+void validityParse(
+	int argc,
+	std::string pre[],   // predefined variables that are known to exist
+	std::string expr,
+	std::vector<std::string> & errors // return errors with parse
+);
 
+// calc.cpp
 // Calculation helpers
 int precedence(
 	string op
 );
 double applyOperation(
 	string op,
-	double a,
-	double b = 0.0
-);
-double evalulatePostfix(
-	string expr
-);
-double infixToPostfix(
-	string expr
-);
-double prefixToPostfix(
-	string expr
+	int argc,
+	std::string argv[]
 );
 
 // Function framework
-void addUserFunction(
-	string name,
-	string expr,
-	string testexpr=name+"()"
+bool addUserFunction(
+	std::string name,
+	int argc;
+	std::string args[], // names for which the arguments are called (valid positional variables)
+	std::string expr  // attempt to parse on add to check for formatting errors
 );
 void removeFunction(
-	string name
+	std::string name
 );
 bool resolveFunction(
-	string name,
-	int argc
-)
+	std::string name
+);
 double computeFunction(
-	string name,
+	std::string name,
 	int argc,
 	double ** argv
+);
+std::string getEvaluationExpr(
+	std::string name
 );
