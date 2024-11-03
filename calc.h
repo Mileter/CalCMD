@@ -66,7 +66,6 @@ extern bool stopReading;  // has the program reached end of input?
 // calculation
 extern std::map<std::string, std::tuple<int, std::vector<std::string>, std::string>, int> func; // (name, (argc, argv mappings, evaluation string, expression mode)
 extern std::map<pair<int, std::string>, std::string> funcComments;                              // ((argc, name), comments)
-extern std::vector<std::string> funcReserved;                                                   // list of all predetermined bindings
 // trig
 extern bool usingRadians;
 
