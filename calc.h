@@ -21,8 +21,12 @@
 #include <regex>     // for splitString()
 #include <string>    // for parsing purposes
 #include <cmath>     // mathematical functions
-#include <stack>     // for parsing purposes
+#include <utility>   // extra functions
 #include <stdexcept> // handle bad arguments
+#include <algorithm> // c++ standard and quick algorithms
+#include <stack>     // for parsing purposes
+#include <vector>    // ^
+#include <map>       // ^
 
 #ifdef _WIN32       // get access to isatty()
 	#include <io.h>
@@ -48,6 +52,7 @@
 #define ERR_ILLEGAL_CHAR 5
 
 #define ERR_DIV_BY_ZERO 6
+
 #define ERR_ARGC_LESS_THAN_OP 7
 #define ERR_ARGC_MORE_THAN_OP 8
 
@@ -60,8 +65,8 @@ extern bool isRedirected; // has CIN/I/SCANF been redirected from a file/program
 extern bool stopReading;  // has the program reached end of input?
 // calculation
 extern std::map<std::string, std::tuple<int, std::vector<std::string>, std::string>, int> func; // (name, (argc, argv mappings, evaluation string, expression mode)
-extern std::map<pair<int, std::string>, std::string> funcComments; // ((argc, name), comments)
-extern std::vector<std::string> funcReserved; // list of all predetermined bindings
+extern std::map<pair<int, std::string>, std::string> funcComments;                              // ((argc, name), comments)
+extern std::vector<std::string> funcReserved;                                                   // list of all predetermined bindings
 // trig
 extern bool usingRadians;
 
@@ -142,5 +147,17 @@ bool resolveFunction(
 	std::string name
 );
 std::string getEvaluationExpr(
+	std::string name
+);
+
+// binds.cpp
+// cmath bindings
+long double applyBindings(
+	std::string name,
+	int argc,
+	long double argv[]
+);
+
+bool isInBindings(
 	std::string name
 );
