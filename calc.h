@@ -59,11 +59,13 @@
 extern bool isRedirected; // has CIN/I/SCANF been redirected from a file/program?
 extern bool stopReading;  // has the program reached end of input?
 // calculation
-extern std::map<std::string, std::tuple<int, std::vector<std::string>, std::string>> func; // ((argc, name), evaluation string)
+extern std::map<std::string, std::tuple<int, std::vector<std::string>, std::string>, int> func; // (name, (argc, argv mappings, evaluation string, expression mode)
 extern std::map<pair<int, std::string>, std::string> funcComments; // ((argc, name), comments)
+extern std::vector<std::string> funcReserved; // list of all predetermined bindings
 // trig
 extern bool usingRadians;
 
+// strextra.cpp
 // String operations
 std::vector<std::string> splitString(
 	const std::string str,
